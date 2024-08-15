@@ -8,7 +8,7 @@ export default function CartContextProvider(props) {
   const [numberOfCartItems, setNumberOfCartItems] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [cartId, setCartId] = useState(null);
-   const { token } = useContext(TokenContext);
+  const { token } = useContext(TokenContext);
 
   let headers = {
     token: localStorage.getItem('userToken'),
@@ -147,7 +147,6 @@ export default function CartContextProvider(props) {
       });
   }
 
-
   useEffect(() => {
     if (!token) {
       setNumberOfCartItems(0);
@@ -155,7 +154,6 @@ export default function CartContextProvider(props) {
       setCartId(null);
     }
   }, [token]);
-
 
   return (
     <CartContext.Provider
