@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { TokenContext } from '../../Context/TokenContext';
 import { CartContext } from '../../Context/CartContext';
@@ -12,6 +12,8 @@ export default function NavBar() {
     useContext(CartContext);
   let { getWishlistProducts, numberOfWishlist, setNumberOfWishlist } =
     useContext(WishlistContext);
+
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   function getWishlist() {
     getWishlistProducts();
@@ -46,6 +48,10 @@ export default function NavBar() {
       setNumberOfWishlist(0);
     }
   }, [token]);
+
+    function toggleMobileMenu() {
+      setIsMobileMenuOpen(!isMobileMenuOpen); // Toggle mobile menu state
+    }
 
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -136,9 +142,10 @@ export default function NavBar() {
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
+              onClick={toggleMobileMenu}
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
               aria-controls="navbar-sticky"
-              aria-expanded="false"
+              aria-expanded={isMobileMenuOpen}
             >
               <span className="sr-only">Open main menu</span>
               <svg
@@ -159,7 +166,9 @@ export default function NavBar() {
             </button>
           </div>
           <div
-            className="items-center  justify-center  hidden w-full  lg:flex lg:w-auto lg:order-1 "
+            className={`items-center justify-center w-full lg:flex lg:w-auto lg:order-1 ${
+              isMobileMenuOpen ? 'block' : 'hidden'
+            }`} // Conditionally render the mobile menu
             id="navbar-sticky"
           >
             {token ? (
