@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import Layout from './Components/Layout/Layout';
 import './App.css';
-import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  createHashRouter,
+  RouterProvider,
+} from 'react-router-dom';
 import Home from './Components/Home/Home';
 import Cart from './Components/Cart/Cart';
 import Products from './Components/Products/Products';
@@ -121,7 +125,7 @@ function App() {
           ),
         },
         {
-          path: '/#/allorders',
+          path: 'allorders',
           element: (
             <ProtectedRoutes>
               <AllOrders />
