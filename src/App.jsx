@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from './Components/Layout/Layout';
 import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router-dom';
 import Home from './Components/Home/Home';
 import Cart from './Components/Cart/Cart';
 import Products from './Components/Products/Products';
@@ -25,7 +25,7 @@ import ForgetPass from './Components/ForgetPass/ForgetPass';
 
 function App() {
   const queryClient = new QueryClient();
-  let routes = createBrowserRouter([
+  let routes = createHashRouter([
     {
       path: '',
       element: <Layout />,
