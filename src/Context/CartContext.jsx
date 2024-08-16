@@ -2,6 +2,7 @@ import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { TokenContext } from './TokenContext';
+import { Toast } from 'flowbite-react';
 
 export let CartContext = createContext();
 export default function CartContextProvider(props) {
@@ -52,6 +53,8 @@ export default function CartContextProvider(props) {
         setNumberOfCartItems(response.data.numOfCartItems);
         setTotalPrice(response.data.data.totalCartPrice);
         setCartId(response?.data.data._id, 'card id');
+
+      
 
         return response;
       })
@@ -120,8 +123,37 @@ export default function CartContextProvider(props) {
       )
       .then((response) => {
         console.log(response.data.session.url, 'online');
+        console.log(response , 'testttt')
+        setNumberOfCartItems(response.data.numOfCartItems);
         window.location.href = response.data.session.url;
-        // setTotalPrice(response.data.data.totalCartPrice);
+        return response;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+  }
+
+  async function checkOutCash(shippingAddress) {
+    const url = `${window.location.origin}/#/allorders`;
+
+    return await axios
+      .post(
+        `https://ecommerce.routemisr.com/api/v1/orders/${cartId}`,
+        {
+          shippingAddress,
+        },
+        {
+          headers,
+        }
+      )
+      .then((response) => {
+        console.log(response, 'cash');
+        setTotalPrice(response.data.data.totalCartPrice);
+        setNumberOfCartItems(response.data.numOfCartItems);
+
+        toast.success('Order placed successfully');
+        window.location.href = url;
 
         return response;
       })
@@ -168,6 +200,7 @@ export default function CartContextProvider(props) {
         setNumberOfCartItems,
         totalPrice,
         checkOutOnline,
+        checkOutCash,
       }}
     >
       {props.children}

@@ -1,12 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './CheckOut.module.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'; // Import Yup for validation
 import { CartContext } from '../../Context/CartContext';
+import { useLocation } from 'react-router-dom';
 
 export default function CheckOut() {
-  let { checkOutOnline } = useContext(CartContext);
+  let { checkOutOnline, checkOutCash } = useContext(CartContext);
+  const [isLoading, setisLoading] = useState(false);
 
+  const [paymentType, setPaymentType] = useState(null);
+
+  useEffect(() => {
+    setPaymentType(state.type);
+  }, []);
+  let { state } = useLocation();
+  console.log(state.type);
   // Define validation schema using Yup
   const validationSchema = Yup.object({
     details: Yup.string().required('Details are required'),
@@ -29,12 +38,21 @@ export default function CheckOut() {
   });
 
   async function payNow(values) {
-    await checkOutOnline(values);
+    setisLoading(true);
+    if (paymentType == 'Online Payment') {
+      await checkOutOnline(values);
+    } else {
+      await checkOutCash(values);
+    }
   }
 
   return (
     <>
       <div className="container mx-auto px-10 pt-10 lg:px-0 max-w-screen-md">
+        <h1 className="text-main text-center mb-5 text-2xl font-bold ">
+          {paymentType}
+        </h1>
+
         <form onSubmit={formik.handleSubmit}>
           <div className="my-2">
             <label
@@ -115,13 +133,22 @@ export default function CheckOut() {
           </div>
 
           <div className="text-center">
-            <button
-              type="submit"
-              className="bg-main text-white px-4 py-3 rounded-lg"
-              disabled={!formik.isValid || !formik.dirty} // Disable button if form is not valid or not dirty
-            >
-              PayNow
-            </button>
+            {isLoading ? (
+              <button
+                type="submit"
+                className="bg-main text-white px-4 py-3 rounded-lg"
+              >
+                <i className="fa fa-spinner fa-spin "></i>
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="bg-main text-white px-4 py-3 rounded-lg"
+                disabled={!formik.isValid || !formik.dirty} // Disable button if form is not valid or not dirty
+              >
+                Pay Now
+              </button>
+            )}
           </div>
         </form>
       </div>

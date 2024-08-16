@@ -3,6 +3,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    'node_modules/flowbite-react/lib/esm/**/*.js'
   ],
   theme: {
     extend: {
@@ -15,13 +16,15 @@ export default {
           '2xl': '1500px',
 
         },
-       
+
       },
       boxShadow: {
         '3xl': '1px 1px 10px rgba(0, 0, 0, 0.3)',
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 }
 

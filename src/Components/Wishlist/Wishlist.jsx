@@ -39,7 +39,7 @@ export default function Wishlist() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="relative container flex flex-col flex-wrap items-center justify-center xl:flex-none 2xl:container mx-auto overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="relative container flex flex-col flex-wrap items-center justify-center xl:flex-none max-w-screen-xl mx-auto overflow-x-auto shadow-md sm:rounded-lg">
           <h1 className="text-2xl md:text-4xl font-extrabold text-center my-10">
             My Wishlist
           </h1>
