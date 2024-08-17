@@ -64,7 +64,7 @@ export default function Login() {
     <>
       <>
         <div className="container mx-auto px-5 md:px-0  py-20  max-w-screen-md">
-          <h1 className="text-2xl font-bold mb-4 ">Login Now:</h1>
+          <h1 className="text-2xl font-bold text-center mb-4 ">Login Now:</h1>
           {userError ? (
             <div
               className=" my-2 text-center font-bold p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100  dark:text-red-600"
