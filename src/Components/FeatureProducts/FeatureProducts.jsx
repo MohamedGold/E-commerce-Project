@@ -66,15 +66,15 @@ export default function FeatureProducts() {
             {data?.data?.data.map((product) => (
               <div
                 key={product.id}
-                className="w-full md:w-1/3 lg:w-1/5 border  rounded-xl    hover:shadow-3xl hover:shadow-[var(--main-color)] my-3 transition-all duration-300 card-box relative mx-auto"
+                className="w-full md:w-1/3 lg:w-1/5 border p-4 rounded-xl group overflow-hidden   hover:shadow-3xl hover:shadow-[var(--main-color)] my-3 transition-all duration-300 card-box relative mx-auto"
               >
                 <Link
                   to={`/productdetails/${product.id}/${product.category.name}`}
                 >
-                  <div className="p-5 rounded-xl ">
+                  <div className=" relative  rounded-xl ">
                     <img
                       src={product.imageCover}
-                      className="w-full pb-3  border-b-[3px] border-b-slate-100 border-solid   "
+                      className="w-full pb-3  border-b-[3px]  border-b-slate-100 border-solid   "
                       alt={product.title}
                     />
                     <h5 className="text-[var(--main-color)] my-3">
@@ -93,24 +93,26 @@ export default function FeatureProducts() {
                   </div>
                 </Link>
 
-                <div className="flex items-end justify-center">
+                <div className="flex flex-col gap-8 rounded-lg items-center absolute top-10 bg-green-200 py-10 px-2     group-hover:start-[0px]  transition-all duration-300 -start-[500px] justify-center">
                   <i
                     onClick={() => toggleWishlist(product.id)}
-                    className={`fa-solid fa-heart fa-2x transition cursor-pointer ${
+                    className={`fa-solid fa-heart fa-2x transition hover:text-red-300 cursor-pointer ${
                       wishlistStatus[product.id] ? 'text-red-400' : 'text-black'
                     } mt-3`}
                   ></i>
-                </div>
 
-                <div className="card-details">
-                  <div className="text-center">
-                    <button
-                      onClick={() => addProductToCart(product.id)}
-                      className="bg-green-500 hover:bg-[var(--main-color)] text-white px-5 py-2 rounded-md my-3"
-                    >
-                      + Add To Cart
-                    </button>
+                  <div className="card-details">
+                    <div className="text-center">
+                      <button
+                        onClick={() => addProductToCart(product.id)}
+                        className="bg-green-500 hover:bg-[var(--main-color)] text-white p-2 rounded-md my-3"
+                      >
+                        <i className="fa-solid fa-cart-plus"></i>
+                      </button>
+                    </div>
                   </div>
+
+
                 </div>
               </div>
             ))}

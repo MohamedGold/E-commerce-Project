@@ -147,7 +147,7 @@ export default function ProductDetails() {
               <div className="flex items-center my-2 justify-center">
                 <i
                   onClick={toggleWishlist}
-                  className={`fa-solid fa-heart fa-2x cursor-pointer transition p-2 ${
+                  className={`fa-solid fa-heart fa-2x hover:text-red-300 cursor-pointer transition p-2 ${
                     isInWishlist ? 'text-red-500' : 'text-black'
                   }`}
                 ></i>
@@ -155,7 +155,7 @@ export default function ProductDetails() {
               <div className="text-center">
                 <button
                   onClick={() => addProductToCart(productDetails.id)}
-                  className="bg-green-600 w-full text-white px-3 mb-5 md:mb-0 py-2 rounded-md my-3"
+                  className="bg-green-600 hover:bg-[var(--main-color)] transition-all w-full text-white px-3 mb-5 md:mb-0 py-2 rounded-md my-3"
                 >
                   Add To Cart
                 </button>
@@ -201,7 +201,7 @@ export default function ProductDetails() {
                   <div className="flex items-center my-2 justify-center">
                     <i
                       onClick={() => toggleRelatedWishlist(product.id)}
-                      className={`fa-solid fa-heart fa-2x cursor-pointer transition ${
+                      className={`fa-solid fa-heart fa-2x hover:text-red-300 cursor-pointer transition ${
                         relatedWishlistStatus[product.id]
                           ? 'text-red-500'
                           : 'text-black'
@@ -211,7 +211,7 @@ export default function ProductDetails() {
                   <div className="text-center">
                     <button
                       onClick={() => addProductToCart(product.id)}
-                      className="bg-green-600 text-white px-3 py-2 rounded-md my-3"
+                      className="bg-green-600 hover:bg-[var(--main-color)] transition-all text-white px-3 py-2 rounded-md my-3"
                     >
                       Add To Cart
                     </button>
