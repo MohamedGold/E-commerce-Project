@@ -13,7 +13,7 @@ export default function NavBar() {
   let { getWishlistProducts, numberOfWishlist, setNumberOfWishlist } =
     useContext(WishlistContext);
 
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   function getWishlist() {
     getWishlistProducts();
@@ -49,9 +49,9 @@ export default function NavBar() {
     }
   }, [token]);
 
-    function toggleMobileMenu() {
-      setIsMobileMenuOpen(!isMobileMenuOpen); // Toggle mobile menu state
-    }
+  function toggleMobileMenu() {
+    setIsMobileMenuOpen(!isMobileMenuOpen); // Toggle mobile menu state
+  }
 
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -68,6 +68,7 @@ export default function NavBar() {
           >
             <img src={logo} alt="logo" className="test" />
           </Link>
+
           <div className="flex lg:order-2  space-x-3 lg:space-x-0  rtl:space-x-reverse">
             <ul className=" flex-col p-4 lg:p-0 mt-4 font-medium items-center  rounded-lg  lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 lg:border-0  cursor-pointer hidden   lg:flex     ">
               {token ? (
@@ -171,6 +172,18 @@ export default function NavBar() {
             }`} // Conditionally render the mobile menu
             id="navbar-sticky"
           >
+            <NavLink
+              to=""
+              onClick={() => scrollToTop()}
+              className={`block py-2 px-3  ${
+                token ? 'hidden' : 'block '
+              }  rounded lg:bg-transparent  lg:p-0 `}
+              aria-current="page"
+            >
+              <li className="list-none flex justify-center items-center   ">
+                Home
+              </li>
+            </NavLink>
             {token ? (
               <ul className="flex flex-col items-center justify-center mx-auto lg:border-none border-b-[3px] border-b-gray-700   p-4 lg:p-0 mt-4 font-medium     lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 ">
                 <li>

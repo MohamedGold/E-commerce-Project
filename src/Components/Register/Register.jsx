@@ -3,7 +3,7 @@ import styles from './Register.module.css';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Register() {
   const [userMessage, setuserMessage] = useState(null);
@@ -267,7 +267,13 @@ export default function Register() {
               >
                 Register
               </button>
+
             )}
+            <div>
+              <Link to="/login" className="text-sm  hover:text-blue-700">
+                Already have an account? Login
+              </Link>
+            </div>
           </div>
         </form>
       </div>

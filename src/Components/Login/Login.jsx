@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { TokenContext } from '../../Context/TokenContext';
 export default function Login() {
-  let { token, setToken ,setUserName,userName} = useContext(TokenContext);
+  let { token, setToken, setUserName, userName } = useContext(TokenContext);
 
   const [userMessage, setuserMessage] = useState(null);
   const [userError, setuserError] = useState(null);
@@ -154,16 +154,16 @@ export default function Login() {
               )}
 
               <Link to="/forget-password">
-                <div className="text-center w-fit mx-auto mt-2 hover:text-green-700">
+                <div className="text-center text-sm w-fit mx-auto mt-2 hover:text-green-700">
                   forget Password ?
                 </div>
               </Link>
             </div>
-            {/* <Link to="/forget-password">
-              <div className="text-center hover:text-green-700">
-                forget Password ?
+            <Link to="/register">
+              <div className="text-center text-sm hover:text-green-700 w-fit mx-auto mt-4">
+                Don't have an account? Sign Up
               </div>
-            </Link> */}
+            </Link>
           </form>
         </div>
       </>

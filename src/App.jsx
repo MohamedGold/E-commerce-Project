@@ -38,9 +38,9 @@ function App() {
           path: '',
           index: true,
           element: (
-            <ProtectedRoutes>
+            
               <Home />
-            </ProtectedRoutes>
+           
           ),
         },
         {
