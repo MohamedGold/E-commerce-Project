@@ -44,6 +44,7 @@ export default function CartContextProvider(props) {
   }
 
   async function getCartProducts() {
+    if (!token) return;
     return axios
       .get('https://ecommerce.routemisr.com/api/v1/cart', {
         headers,
@@ -53,8 +54,6 @@ export default function CartContextProvider(props) {
         setNumberOfCartItems(response.data.numOfCartItems);
         setTotalPrice(response.data.data.totalCartPrice);
         setCartId(response?.data.data._id, 'card id');
-
-      
 
         return response;
       })
@@ -123,7 +122,7 @@ export default function CartContextProvider(props) {
       )
       .then((response) => {
         console.log(response.data.session.url, 'online');
-        console.log(response , 'testttt')
+        console.log(response, 'testttt');
         setNumberOfCartItems(response.data.numOfCartItems);
         window.location.href = response.data.session.url;
         return response;

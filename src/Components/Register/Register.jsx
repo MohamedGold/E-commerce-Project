@@ -267,7 +267,6 @@ export default function Register() {
               >
                 Register
               </button>
-
             )}
             <div>
               <Link to="/login" className="text-sm  hover:text-blue-700">

@@ -48,23 +48,6 @@ export default function CategorySlider() {
 
   return (
     <>
-      {/* <div className="container mx-auto   my-10 max-w-screen-xl 2xl:container  ">
-        <h1 className="text-2xl my-5 font-bold">Show Popular Categories :</h1>
-        <Slider {...settings}>
-          {data?.data.data.map((cat) => (
-            <div key={cat._id} className="text-center    mx-auto">
-              <img
-                src={cat.image}
-                className="2xl:aspect-square  rounded     w-[200px] h-[200px] mx-auto   "
-                alt=""
-              />
-              <p className="text-pretty text-[12px]  md:text-[16px] md:font-bold   py-3    ">
-                {cat.name}
-              </p>
-            </div>
-          ))}
-        </Slider>
-      </div> */}
       <div className="container mx-auto px-5 md:px-0 my-10 max-w-screen-xl ">
         <h1 className="md:text-2xl text-xl  text-center ms-5 xl:ms-10  md:text-left my-5 font-bold">
           Show Popular Categories :

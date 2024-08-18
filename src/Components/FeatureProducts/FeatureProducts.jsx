@@ -20,12 +20,14 @@ export default function FeatureProducts() {
   useEffect(() => {
     const fetchWishlistStatus = async () => {
       const response = await getWishlistProducts();
-      const wishlist = response.data.data;
-      const status = wishlist.reduce((acc, item) => {
-        acc[item.id] = true;
-        return acc;
-      }, {});
-      setWishlistStatus(status);
+      if (response?.data?.data) {
+        const wishlist = response.data.data;
+        const status = wishlist.reduce((acc, item) => {
+          acc[item.id] = true;
+          return acc;
+        }, {});
+        setWishlistStatus(status);
+      }
     };
 
     fetchWishlistStatus();
@@ -111,8 +113,6 @@ export default function FeatureProducts() {
                       </button>
                     </div>
                   </div>
-
-
                 </div>
               </div>
             ))}

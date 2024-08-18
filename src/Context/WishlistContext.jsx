@@ -15,6 +15,11 @@ export default function WishlistContextProvider(props) {
   };
 
   async function addProductToWishlist(productId) {
+    if (!token) {
+      toast.error('You need to log in to add products to the wishlist');
+      return;
+    }
+
     return await axios
       .post(
         ' https://ecommerce.routemisr.com/api/v1/wishlist',
@@ -40,6 +45,8 @@ export default function WishlistContextProvider(props) {
   }
 
   async function getWishlistProducts() {
+    if (!token) return;
+
     return axios
       .get('https://ecommerce.routemisr.com/api/v1/wishlist', {
         headers,
@@ -56,6 +63,7 @@ export default function WishlistContextProvider(props) {
   }
 
   async function deleteWishlist(productId) {
+    if (!token) return;
     return axios
       .delete(`https://ecommerce.routemisr.com/api/v1/wishlist/${productId}`, {
         headers,
@@ -73,15 +81,17 @@ export default function WishlistContextProvider(props) {
   }
 
   async function isProductInWishlist(productId) {
+    if (!token) return;
+
     let wishlistResponse = await getWishlistProducts();
     return wishlistResponse.data.data.some((item) => item.id === productId);
   }
 
-   useEffect(() => {
-     if (!token) {
-       setNumberOfWishlist(0);
-     }
-   }, [token]);
+  useEffect(() => {
+    if (!token) {
+      setNumberOfWishlist(0);
+    }
+  }, [token]);
 
   return (
     <WishlistContext.Provider
