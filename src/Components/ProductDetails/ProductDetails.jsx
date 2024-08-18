@@ -152,7 +152,7 @@ export default function ProductDetails() {
               </Slider>
             </div>
 
-            <div className="w-full md:w-3/4 mx-4">
+            <div className="w-full px-5 md:px-0 md:w-3/4 mx-4">
               <h2 className="text-black font-bold my-3 text-2xl">
                 {productDetails.title}
               </h2>
@@ -183,7 +183,6 @@ export default function ProductDetails() {
                 >
                   Add To Cart
                 </button>
-                
               </div>
             </div>
           </div>
