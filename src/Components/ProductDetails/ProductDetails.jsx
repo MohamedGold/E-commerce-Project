@@ -143,7 +143,7 @@ export default function ProductDetails() {
               <Slider {...settings}>
                 {productDetails?.images?.map((src, index) => (
                   <img
-                    className="w-full my-4"
+                    className="w-full px-5 md:px-0 my-4"
                     src={src}
                     key={index}
                     alt={`Product ${index + 1}`}
@@ -183,12 +183,13 @@ export default function ProductDetails() {
                 >
                   Add To Cart
                 </button>
+                
               </div>
             </div>
           </div>
 
           <div className="container mx-auto max-w-screen-xl">
-            <h1 className="text-center text-2xl font-bold my-2">
+            <h1 className="text-center text-2xl border-t md:border-none md:pt-0 pt-5 md:mt-0 mt-12 font-bold my-2">
               Related Products
             </h1>
             <div className="flex flex-wrap justify-center mx-auto mb-10 gap-4 px-5 lg:px-0">
