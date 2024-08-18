@@ -31,18 +31,8 @@ export default function ProductDetails() {
   };
 
   useEffect(() => {
-    loadData();
+    fetchProductDetails();
   }, [id]);
-
-  async function loadData() {
-    try {
-      await Promise.all([fetchProductDetails(), fetchRelatedProducts()]);
-      setIsLoading(false);
-    } catch (err) {
-      console.error('Error loading data:', err);
-      setIsLoading(false);
-    }
-  }
 
   async function fetchProductDetails() {
     try {
@@ -51,8 +41,11 @@ export default function ProductDetails() {
       );
       setProductDetails(response.data.data);
       await checkIfInWishlist();
+      fetchRelatedProducts(); // Fetch related products after productDetails
+      setIsLoading(false);
     } catch (err) {
       console.error('Error fetching product details:', err);
+      setIsLoading(false);
     }
   }
 
@@ -99,11 +92,12 @@ export default function ProductDetails() {
 
   useEffect(() => {
     checkIfInWishlist();
-  }, [loadData]);
-
-  useEffect(() => {
     fetchRelatedProducts();
   }, [productDetails]);
+
+  useEffect(() => {
+    productDetails;
+  }, [id]);
 
   async function toggleWishlist() {
     try {
@@ -113,6 +107,14 @@ export default function ProductDetails() {
         await addProductToWishlist(productDetails.id);
       }
       setIsInWishlist(!isInWishlist);
+
+      // Update relatedWishlistStatus if this product is in related products
+      if (relatedWishlistStatus[productDetails.id] !== undefined) {
+        setRelatedWishlistStatus({
+          ...relatedWishlistStatus,
+          [productDetails.id]: !isInWishlist,
+        });
+      }
     } catch (error) {
       console.error('Error toggling wishlist status:', error);
     }
@@ -131,6 +133,11 @@ export default function ProductDetails() {
         [productId]: !relatedWishlistStatus[productId],
       };
       setRelatedWishlistStatus(updatedRelatedWishlistStatus);
+
+      // If the productId matches the current product, update its wishlist status
+      if (productId === productDetails.id) {
+        setIsInWishlist(!relatedWishlistStatus[productId]);
+      }
     } catch (error) {
       console.error('Error toggling related wishlist status:', error);
     }

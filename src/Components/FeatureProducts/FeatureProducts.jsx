@@ -144,21 +144,23 @@ export default function FeatureProducts() {
                 </Link>
 
                 <div className="flex flex-col gap-8 rounded-lg items-center absolute top-10 bg-green-200 py-10 px-2 group-hover:start-[0px] transition-all duration-300 -start-[500px] justify-center">
-                  <i
-                    onClick={() => toggleWishlist(product.id)}
-                    className={`fa-solid fa-heart fa-2x transition hover:text-red-300 cursor-pointer ${
-                      wishlistStatus[product.id] ? 'text-red-400' : 'text-black'
-                    } mt-3`}
-                  ></i>
+                  <div className="wishlist">
+                    <i
+                      onClick={() => toggleWishlist(product.id)}
+                      className={`fa-solid fa-heart fa-2x transition hover:text-red-300 cursor-pointer ${
+                        wishlistStatus[product.id]
+                          ? 'text-red-400'
+                          : 'text-slate-700'
+                      } mt-3`}
+                    ></i>
+                  </div>
 
-                  <div className="card-details">
-                    <div className="text-center">
-                      <button
-                        onClick={() => addProductToCart(product.id)}
-                        className="bg-green-500 hover:bg-[var(--main-color)] text-white p-2 rounded-md my-3"
-                      >
-                        <i className="fa-solid fa-cart-plus"></i>
-                      </button>
+                  <div className="Cart">
+                    <div
+                      onClick={() => addProductToCart(product.id)}
+                      className="text-center cursor-pointer bg-green-500 hover:bg-[var(--main-color)] text-white p-2 rounded-md my-3"
+                    >
+                      <i className="fa-solid fa-cart-plus"></i>
                     </div>
                   </div>
                 </div>
