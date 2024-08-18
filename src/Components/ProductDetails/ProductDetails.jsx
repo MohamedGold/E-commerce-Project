@@ -7,20 +7,19 @@ import { CartContext } from '../../Context/CartContext';
 import { WishlistContext } from '../../Context/WishlistContext';
 
 export default function ProductDetails() {
-  let { addProductToCart } = useContext(CartContext);
-  let { addProductToWishlist, deleteWishlist, getWishlistProducts } =
+  const { addProductToCart } = useContext(CartContext);
+  const { addProductToWishlist, deleteWishlist, getWishlistProducts } =
     useContext(WishlistContext);
 
-  let { id, category } = useParams();
+  const { id, category } = useParams();
 
   const [productDetails, setProductDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [relatedWishlistStatus, setRelatedWishlistStatus] = useState({});
 
-  var settings = {
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -32,25 +31,32 @@ export default function ProductDetails() {
   };
 
   useEffect(() => {
-    getProductDetails();
-    getRelatedProducts();
-    checkIfInWishlist();
+    loadData();
   }, [id]);
 
-  async function getProductDetails() {
+  async function loadData() {
+    try {
+      await Promise.all([fetchProductDetails(), fetchRelatedProducts()]);
+      setIsLoading(false);
+    } catch (err) {
+      console.error('Error loading data:', err);
+      setIsLoading(false);
+    }
+  }
+
+  async function fetchProductDetails() {
     try {
       const response = await axios.get(
         `https://ecommerce.routemisr.com/api/v1/products/${id}`
       );
       setProductDetails(response.data.data);
-      setIsLoading(false);
+      await checkIfInWishlist();
     } catch (err) {
-      setErrorMessage(err.message);
-      setIsLoading(false);
+      console.error('Error fetching product details:', err);
     }
   }
 
-  async function getRelatedProducts() {
+  async function fetchRelatedProducts() {
     try {
       const response = await axios.get(
         'https://ecommerce.routemisr.com/api/v1/products'
@@ -58,52 +64,68 @@ export default function ProductDetails() {
       const related = response.data.data.filter(
         (product) => product.category.name === category
       );
+
+      const wishlistResponse = await getWishlistProducts();
+      const wishlistIds =
+        wishlistResponse?.data?.data?.map((item) => item.id) || [];
+
       const initialWishlistStatus = {};
       related.forEach((product) => {
-        initialWishlistStatus[product.id] = false;
+        initialWishlistStatus[product.id] = wishlistIds.includes(product.id);
       });
+
       setRelatedWishlistStatus(initialWishlistStatus);
       setRelatedProducts(related);
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching related products:', err);
     }
   }
 
   async function checkIfInWishlist() {
-    const wishlist = await getWishlistProducts();
-    const inWishlist = wishlist.data.data.some((item) => item.id === id);
-    setIsInWishlist(inWishlist);
-    const updatedRelatedWishlistStatus = {};
-    wishlist.data.data.forEach((item) => {
-      if (relatedWishlistStatus[item.id] !== undefined) {
-        updatedRelatedWishlistStatus[item.id] = true;
+    try {
+      const wishlistResponse = await getWishlistProducts();
+      if (wishlistResponse?.data?.data) {
+        const inWishlist = wishlistResponse.data.data.some(
+          (item) => item.id === id
+        );
+        setIsInWishlist(inWishlist);
+      } else {
+        setIsInWishlist(false);
       }
-    });
-    setRelatedWishlistStatus((prevState) => ({
-      ...prevState,
-      ...updatedRelatedWishlistStatus,
-    }));
+    } catch (error) {
+      console.error('Error checking wishlist status:', error);
+    }
   }
 
   async function toggleWishlist() {
-    if (isInWishlist) {
-      await deleteWishlist(productDetails.id);
-    } else {
-      await addProductToWishlist(productDetails.id);
+    try {
+      if (isInWishlist) {
+        await deleteWishlist(productDetails.id);
+      } else {
+        await addProductToWishlist(productDetails.id);
+      }
+      setIsInWishlist(!isInWishlist);
+    } catch (error) {
+      console.error('Error toggling wishlist status:', error);
     }
-    setIsInWishlist(!isInWishlist);
   }
 
   async function toggleRelatedWishlist(productId) {
-    if (relatedWishlistStatus[productId]) {
-      await deleteWishlist(productId);
-    } else {
-      await addProductToWishlist(productId);
+    try {
+      if (relatedWishlistStatus[productId]) {
+        await deleteWishlist(productId);
+      } else {
+        await addProductToWishlist(productId);
+      }
+
+      const updatedRelatedWishlistStatus = {
+        ...relatedWishlistStatus,
+        [productId]: !relatedWishlistStatus[productId],
+      };
+      setRelatedWishlistStatus(updatedRelatedWishlistStatus);
+    } catch (error) {
+      console.error('Error toggling related wishlist status:', error);
     }
-    setRelatedWishlistStatus((prevState) => ({
-      ...prevState,
-      [productId]: !prevState[productId],
-    }));
   }
 
   function scrollToTop() {
@@ -111,11 +133,11 @@ export default function ProductDetails() {
   }
 
   return (
-    <>
-      <div className="max-w-screen-xl container mx-auto">
-        {isLoading ? (
-          <Loader />
-        ) : (
+    <div className="max-w-screen-xl  container mx-auto">
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
           <div className="flex flex-wrap md:flex-nowrap items-center justify-center">
             <div className="w-full md:w-1/4 my-10">
               <Slider {...settings}>
@@ -144,6 +166,7 @@ export default function ProductDetails() {
                   {productDetails.ratingsAverage}
                 </div>
               </div>
+
               <div className="flex items-center my-2 justify-center">
                 <i
                   onClick={toggleWishlist}
@@ -152,26 +175,19 @@ export default function ProductDetails() {
                   }`}
                 ></i>
               </div>
+
               <div className="text-center">
                 <button
                   onClick={() => addProductToCart(productDetails.id)}
-                  className="bg-green-600 hover:bg-[var(--main-color)] transition-all w-full text-white px-3 mb-5 md:mb-0 py-2 rounded-md my-3"
+                  className="bg-green-600 hover:bg-[var(--main-color)] transition-all w-full text-white px-3 py-2 rounded-md my-3"
                 >
                   Add To Cart
                 </button>
               </div>
             </div>
           </div>
-        )}
-      </div>
 
-      <div className="container mx-auto  max-w-screen-xl">
-        {isLoading ? (
-          <div className="h-100 flex justify-center items-center">
-            <Loader />
-          </div>
-        ) : (
-          <>
+          <div className="container mx-auto max-w-screen-xl">
             <h1 className="text-center text-2xl font-bold my-2">
               Related Products
             </h1>
@@ -189,7 +205,7 @@ export default function ProductDetails() {
                     <h5 className="text-[var(--main-color)]">
                       {product.category.name}
                     </h5>
-                    <p>{product.title.split(' ').splice(0, 2).join(' ')}</p>
+                    <p>{product.title.split(' ').slice(0, 2).join(' ')}</p>
                     <div className="flex justify-between items-center">
                       <p className="w-1/2">{product.price} EGP</p>
                       <div className="w-1/2 text-end">
@@ -198,6 +214,7 @@ export default function ProductDetails() {
                       </div>
                     </div>
                   </Link>
+
                   <div className="flex items-center my-2 justify-center">
                     <i
                       onClick={() => toggleRelatedWishlist(product.id)}
@@ -208,6 +225,7 @@ export default function ProductDetails() {
                       }`}
                     ></i>
                   </div>
+
                   <div className="text-center">
                     <button
                       onClick={() => addProductToCart(product.id)}
@@ -219,9 +237,9 @@ export default function ProductDetails() {
                 </div>
               ))}
             </div>
-          </>
-        )}
-      </div>
-    </>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
