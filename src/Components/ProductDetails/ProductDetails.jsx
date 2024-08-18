@@ -101,6 +101,10 @@ export default function ProductDetails() {
     checkIfInWishlist();
   }, [loadData]);
 
+  useEffect(() => {
+    fetchRelatedProducts();
+  }, [productDetails]);
+
   async function toggleWishlist() {
     try {
       if (isInWishlist) {
