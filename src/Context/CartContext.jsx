@@ -107,7 +107,8 @@ export default function CartContextProvider(props) {
   }
 
   async function checkOutOnline(shippingAddress) {
-    const url = `${window.location.origin}`;
+    const url = `${window.location.origin}/#/allorders`;
+    console.log('Redirecting to:', url);
     return await axios
       .post(
         `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${encodeURIComponent(
@@ -123,7 +124,8 @@ export default function CartContextProvider(props) {
       .then((response) => {
         console.log(response.data.session.url, 'online');
         console.log(response, 'testttt');
-        setNumberOfCartItems(response.data.numOfCartItems);
+        // setNumberOfCartItems(response.data.numOfCartItems);
+         console.log('Session URL from response:', response.data.session.url);
         window.location.href = response.data.session.url;
         return response;
       })
@@ -132,6 +134,17 @@ export default function CartContextProvider(props) {
         return err;
       });
   }
+
+
+  useEffect(() => {
+    const handlePostPaymentRedirect = () => {
+      if (window.location.hash.includes('/allorders')) {
+        window.location.hash = '/allorders'; // Ensure proper URL after payment
+      }
+    };
+
+    handlePostPaymentRedirect();
+  }, []);
 
   async function checkOutCash(shippingAddress) {
     const url = `${window.location.origin}/#/allorders`;
