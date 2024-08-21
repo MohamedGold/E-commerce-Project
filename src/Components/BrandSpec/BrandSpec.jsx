@@ -35,7 +35,7 @@ export default function BrandSpec() {
         <div className="container 2xl:container mx-auto  text-center max-w-screen-xl">
           <Link  to={'/brand'}>
             <button className="hover:text-[var(--main-color)] transition mt-10 p-3">
-              <i class="fa-solid fa-arrow-left-long me-2  "></i>Go Back
+              <i className="fa-solid fa-arrow-left-long me-2  "></i>Go Back
             </button>
           </Link>
 

@@ -3,6 +3,8 @@ import styles from './Brands.module.css';
 import axios from 'axios';
 import Loader from '../Loader/Loader';
 import { Link, useParams } from 'react-router-dom';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+
 export default function Brands() {
   const [brandsItems, setBrandsItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,25 +32,30 @@ export default function Brands() {
 
   return (
     <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="container mx-auto  max-w-screen-xl">
-          <div className="flex flex-wrap justify-center gap-x-3 text-center   pt-5 ">
-            {brandsItems.map((brand) => (
-              <div
-                key={brand._id}
-                className={` border  p-5 rounded-lg hover:shadow-3xl transition hover:shadow-[var(--main-color)] flex flex-col mx-auto mb-10 lg:w-1/5 `}
-              >
-                <Link to={`/brand/${brand._id}`}>
-                  <img src={brand.image} alt={brand.name} />
-                  <h3 className="mt-2 font-bold ">{brand.name}</h3>
-                </Link>
-              </div>
-            ))}
+      <HelmetProvider>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className="container mx-auto  max-w-screen-xl">
+            <div className="flex flex-wrap justify-center gap-x-3 text-center   pt-5 ">
+              {brandsItems.map((brand) => (
+                <div
+                  key={brand._id}
+                  className={` border  p-5 rounded-lg hover:shadow-3xl transition hover:shadow-[var(--main-color)] flex flex-col mx-auto mb-10 lg:w-1/5 `}
+                >
+                  <Helmet>
+                    <title>Brands</title>
+                  </Helmet>
+                  <Link to={`/brand/${brand._id}`}>
+                    <img src={brand.image} alt={brand.name} />
+                    <h3 className="mt-2 font-bold ">{brand.name}</h3>
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </HelmetProvider>
     </>
   );
 }
