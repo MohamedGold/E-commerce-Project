@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { TokenContext } from '../../Context/TokenContext';
 import { CartContext } from '../../Context/CartContext';
@@ -14,6 +14,7 @@ export default function NavBar() {
     useContext(WishlistContext);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navRef = useRef(null);
 
   function getWishlist() {
     getWishlistProducts();
@@ -57,12 +58,31 @@ export default function NavBar() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false); // Close menu if clicked outside
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       <nav className="bg-main-light   fixed w-full z-20 top-0 start-0 ">
-        <div className="  max-w-screen-xl      container mx-auto   flex flex-wrap items-center justify-between  p-4">
+        <div
+          ref={navRef}
+          className="  max-w-screen-xl      container mx-auto   flex flex-wrap items-center justify-between  p-4"
+        >
           <Link
-            onClick={() => scrollToTop()}
+            onClick={() => {
+              scrollToTop();
+              setIsMobileMenuOpen(false);
+            }}
             href="https://flowbite.com/"
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
@@ -76,7 +96,10 @@ export default function NavBar() {
                   <li>
                     <Link
                       to="wishlist"
-                      onClick={() => scrollToTop()}
+                      onClick={() => {
+                        scrollToTop();
+                        setIsMobileMenuOpen(false);
+                      }}
                       className=" relative block py-2 px-3 -me-8  hover:text-red-500 transition-all    my-3 lg:my-0  rounded   lg:p-0   "
                     >
                       <span className="mx-2 inline-block   ">Wishlist</span>
@@ -89,7 +112,10 @@ export default function NavBar() {
                   <li>
                     <Link
                       to="cart"
-                      onClick={() => scrollToTop()}
+                      onClick={() => {
+                        scrollToTop();
+                        setIsMobileMenuOpen(false);
+                      }}
                       className="relative block py-2 px-3   rounded    lg:p-0   "
                     >
                       <i className="fa-solid fa-cart-shopping text-slate-600 hover:text-[var(--main-color)] transition text-[25px]  "></i>
@@ -108,7 +134,10 @@ export default function NavBar() {
                   </li>
                   <li>
                     <a
-                      onClick={() => logOut()}
+                      onClick={() => {
+                        logOut();
+                        setIsMobileMenuOpen(false);
+                      }}
                       to="logout"
                       className="block py-2 px-3  rounded   lg:p-0   "
                     >
@@ -122,6 +151,7 @@ export default function NavBar() {
                   <li>
                     <NavLink
                       to="login"
+                      onClick={()=> setIsMobileMenuOpen(false)}
                       className="block py-2 px-3  rounded   lg:p-0 "
                     >
                       Login
@@ -131,6 +161,7 @@ export default function NavBar() {
                   <li>
                     <NavLink
                       to="register"
+                      onClick={()=> setIsMobileMenuOpen(false)}
                       className="block py-2 px-3  rounded   lg:p-0 "
                     >
                       Register
@@ -174,7 +205,10 @@ export default function NavBar() {
           >
             <NavLink
               to=""
-              onClick={() => scrollToTop()}
+              onClick={() => {
+                scrollToTop();
+                setIsMobileMenuOpen(false);
+              }}
               className={`block py-2 px-3  ${
                 token ? 'hidden' : 'block '
               }  rounded lg:bg-transparent  lg:p-0 `}
@@ -189,7 +223,10 @@ export default function NavBar() {
                 <li>
                   <NavLink
                     to=""
-                    onClick={() => scrollToTop()}
+                    onClick={() => {
+                      scrollToTop();
+                      setIsMobileMenuOpen(false);
+                    }}
                     className="block py-2 px-3    rounded lg:bg-transparent  lg:p-0 "
                     aria-current="page"
                   >
@@ -199,7 +236,10 @@ export default function NavBar() {
                 <li>
                   <NavLink
                     to="cart"
-                    onClick={() => scrollToTop()}
+                    onClick={() => {
+                      scrollToTop();
+                      setIsMobileMenuOpen(false);
+                    }}
                     className="relative block py-2 px-3 text-gray-900 rounded    lg:p-0  "
                   >
                     Cart
@@ -208,7 +248,10 @@ export default function NavBar() {
                 <li>
                   <NavLink
                     to="product"
-                    onClick={() => scrollToTop()}
+                    onClick={() => {
+                      scrollToTop();
+                      setIsMobileMenuOpen(false);
+                    }}
                     className="relative block py-2 px-3 text-gray-900 rounded    lg:p-0 "
                   >
                     Products
@@ -217,7 +260,10 @@ export default function NavBar() {
                 <li>
                   <NavLink
                     to="category"
-                    onClick={() => scrollToTop()}
+                    onClick={() => {
+                      scrollToTop();
+                      setIsMobileMenuOpen(false);
+                    }}
                     className="relative block py-2 px-3 text-gray-900 rounded    lg:p-0 "
                   >
                     Categories
@@ -226,7 +272,10 @@ export default function NavBar() {
                 <li>
                   <NavLink
                     to="brand"
-                    onClick={() => scrollToTop()}
+                    onClick={() => {
+                      scrollToTop();
+                      setIsMobileMenuOpen(false);
+                    }}
                     className="relative block py-2 px-3 text-gray-900 rounded    lg:p-0 "
                   >
                     Brands
@@ -244,7 +293,10 @@ export default function NavBar() {
                     <li>
                       <Link
                         to="wishlist"
-                        onClick={() => scrollToTop()}
+                        onClick={() => {
+                          scrollToTop();
+                          setIsMobileMenuOpen(false);
+                        }}
                         className="relative block py-2 px-3 text-center my-3  rounded   lg:p-0   "
                       >
                         <i className="fa-solid fa-heart fa-xl hover:text-red-500 transition"></i>
@@ -256,7 +308,10 @@ export default function NavBar() {
                     <li>
                       <Link
                         to="cart"
-                        onClick={() => scrollToTop()}
+                        onClick={() => {
+                          scrollToTop();
+                          setIsMobileMenuOpen(false);
+                        }}
                         className="relative block py-2 px-3  text-center  rounded    lg:p-0   "
                       >
                         <i className="fa-solid fa-cart-shopping text-slate-600 hover:text-[var(--main-color)] transition text-[25px]  "></i>
@@ -267,7 +322,10 @@ export default function NavBar() {
                     </li>
                     <li>
                       <a
-                        onClick={() => logOut()}
+                        onClick={() => {
+                          logOut();
+                          setIsMobileMenuOpen(false);
+                        }}
                         to="logout"
                         className="block py-2 px-3  rounded   lg:p-0   "
                       >
@@ -281,6 +339,7 @@ export default function NavBar() {
                     <li>
                       <NavLink
                         to="login"
+                        onClick={()=> setIsMobileMenuOpen(false)}
                         className="block py-2 px-3  rounded   lg:p-0 "
                       >
                         Login
@@ -289,6 +348,7 @@ export default function NavBar() {
                     <li>
                       <NavLink
                         to="register"
+                        onClick={()=> setIsMobileMenuOpen(false)}
                         className="block py-2 px-3  rounded   lg:p-0 "
                       >
                         Register
