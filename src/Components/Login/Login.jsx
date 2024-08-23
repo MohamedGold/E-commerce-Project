@@ -5,9 +5,11 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { TokenContext } from '../../Context/TokenContext';
+import { CartContext } from '../../Context/CartContext';
 export default function Login() {
   let { token, setToken, setUserName, userName } = useContext(TokenContext);
 
+  let { userId ,setUserId } = useContext(CartContext);
   const [userMessage, setuserMessage] = useState(null);
   const [userError, setuserError] = useState(null);
   const [isLoading, setisLoading] = useState(false);
@@ -50,6 +52,12 @@ export default function Login() {
         setToken(data.data.token);
         // * Save User Name To All Components
         setUserName(data.data.user.name);
+        // * Save User Id To LocalStorage
+        // localStorage.setItem('userId',userId);
+
+        
+
+
         //* Go to => Login
         navigate('/');
       })

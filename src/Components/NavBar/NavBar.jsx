@@ -8,7 +8,7 @@ import { WishlistContext } from '../../Context/WishlistContext';
 export default function NavBar() {
   let navigate = useNavigate();
   let { token, setToken, userName, setUserName } = useContext(TokenContext);
-  let { numberOfCartItems, getCartProducts, setNumberOfCartItems } =
+  let { numberOfCartItems, getCartProducts, setNumberOfCartItems, setCartId } =
     useContext(CartContext);
   let { getWishlistProducts, numberOfWishlist, setNumberOfWishlist } =
     useContext(WishlistContext);
@@ -32,10 +32,12 @@ export default function NavBar() {
   function logOut() {
     localStorage.removeItem('userToken');
     localStorage.removeItem('userName');
+    localStorage.removeItem('userId');
     setToken(null);
 
     setNumberOfCartItems(0);
     setNumberOfWishlist(0);
+    
 
     navigate('/login');
   }
@@ -151,7 +153,7 @@ export default function NavBar() {
                   <li>
                     <NavLink
                       to="login"
-                      onClick={()=> setIsMobileMenuOpen(false)}
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className="block py-2 px-3  rounded   lg:p-0 "
                     >
                       Login
@@ -161,7 +163,7 @@ export default function NavBar() {
                   <li>
                     <NavLink
                       to="register"
-                      onClick={()=> setIsMobileMenuOpen(false)}
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className="block py-2 px-3  rounded   lg:p-0 "
                     >
                       Register
@@ -281,6 +283,19 @@ export default function NavBar() {
                     Brands
                   </NavLink>
                 </li>
+
+                <li>
+                  <NavLink
+                    to="allorders"
+                    onClick={() => {
+                      scrollToTop();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="relative block py-2 px-3 text-gray-900 rounded    lg:p-0 "
+                  >
+                    Orders
+                  </NavLink>
+                </li>
               </ul>
             ) : null}
 
@@ -339,7 +354,7 @@ export default function NavBar() {
                     <li>
                       <NavLink
                         to="login"
-                        onClick={()=> setIsMobileMenuOpen(false)}
+                        onClick={() => setIsMobileMenuOpen(false)}
                         className="block py-2 px-3  rounded   lg:p-0 "
                       >
                         Login
@@ -348,7 +363,7 @@ export default function NavBar() {
                     <li>
                       <NavLink
                         to="register"
-                        onClick={()=> setIsMobileMenuOpen(false)}
+                        onClick={() => setIsMobileMenuOpen(false)}
                         className="block py-2 px-3  rounded   lg:p-0 "
                       >
                         Register

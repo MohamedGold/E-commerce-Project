@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { CartContext } from './CartContext';
 
 export let TokenContext = createContext();
 
@@ -7,6 +8,8 @@ export default function TokenContextProvider(props) {
   const [userName, setUserName] = useState(
     localStorage.getItem('userName') || ''
   );
+  // let { userId, setUserId } = useContext(CartContext);
+  //  const [userId, setUserId] = useState(localStorage.getItem('userId') || null);
 
   useEffect(() => {
     if (localStorage.getItem('userToken')) {

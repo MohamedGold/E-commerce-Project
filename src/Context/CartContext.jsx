@@ -9,11 +9,23 @@ export default function CartContextProvider(props) {
   const [numberOfCartItems, setNumberOfCartItems] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [cartId, setCartId] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const { token } = useContext(TokenContext);
+  const [userId, setUserId] = useState(localStorage.getItem('userId') || null);
 
   let headers = {
     token: localStorage.getItem('userToken'),
   };
+
+  useEffect(() => {
+    if (userId) {
+      localStorage.setItem('userId', userId);
+    } else {
+      localStorage.removeItem('userId');
+    }
+  }, [userId]);
 
   async function addProductToCart(productId) {
     return await axios
@@ -54,6 +66,10 @@ export default function CartContextProvider(props) {
         setNumberOfCartItems(response.data.numOfCartItems);
         setTotalPrice(response.data.data.totalCartPrice);
         setCartId(response?.data.data._id, 'card id');
+        console.log(response?.data?.data.cartOwner);
+
+        setUserId(response?.data?.data?.cartOwner);
+        localStorage.setItem('userId', response?.data?.data?.cartOwner);
 
         return response;
       })
@@ -62,6 +78,28 @@ export default function CartContextProvider(props) {
         return err;
       });
   }
+
+  async function getOrders() {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`
+      );
+      setOrders(response.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setOrders([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
 
   async function deleteProduct(productId) {
     return axios
@@ -125,7 +163,7 @@ export default function CartContextProvider(props) {
         console.log(response.data.session.url, 'online');
         console.log(response, 'testttt');
         // setNumberOfCartItems(response.data.numOfCartItems);
-         console.log('Session URL from response:', response.data.session.url);
+        console.log('Session URL from response:', response.data.session.url);
         window.location.href = response.data.session.url;
         return response;
       })
@@ -134,7 +172,6 @@ export default function CartContextProvider(props) {
         return err;
       });
   }
-
 
   useEffect(() => {
     const handlePostPaymentRedirect = () => {
@@ -163,6 +200,8 @@ export default function CartContextProvider(props) {
         console.log(response, 'cash');
         setTotalPrice(response.data.data.totalCartPrice);
         setNumberOfCartItems(response.data.numOfCartItems);
+        setUserId(response?.data.data.user);
+        console.log(response?.data.data.user, 'userId');
 
         toast.success('Order placed successfully');
         window.location.href = url;
@@ -196,6 +235,10 @@ export default function CartContextProvider(props) {
       setNumberOfCartItems(0);
       setTotalPrice(0);
       setCartId(null);
+      setUserId(null);
+      localStorage.removeItem('userId');
+    } else {
+      getCartProducts();
     }
   }, [token]);
 
@@ -213,6 +256,14 @@ export default function CartContextProvider(props) {
         totalPrice,
         checkOutOnline,
         checkOutCash,
+        cartId,
+        userId,
+        setUserId,
+        getOrders,
+        orders,
+        loading,
+        setLoading,
+        setOrders
       }}
     >
       {props.children}
