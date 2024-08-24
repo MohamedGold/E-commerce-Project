@@ -27,12 +27,15 @@ export default function AllOrders() {
 
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
+    const storedNewUserId = localStorage.getItem('NewUserId');
 
     if (
       storedUserId &&
       storedUserId !== 'undefined' &&
       storedUserId !== 'null'
     ) {
+      getUserOrder();
+    } else if (storedNewUserId) {
       getUserOrder();
     } else {
       setOrders([]);
@@ -100,7 +103,7 @@ export default function AllOrders() {
                     <h3 className="text-xl  w-full  font-semibold mb-2">
                       Order ID: {order.id}
                     </h3>
-                    <p className="text-lg bg-white rounded mb-2">
+                    <p className="text-lg bg-blue-200 rounded mb-2">
                       Deliver to: {order.user.name}
                     </p>
                     <p className="text-lg mb-2">

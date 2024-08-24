@@ -14,6 +14,9 @@ export default function CartContextProvider(props) {
 
   const { token } = useContext(TokenContext);
   const [userId, setUserId] = useState(localStorage.getItem('userId') || null);
+  const [newUserId, setNewUserId] = useState(
+    localStorage.getItem('NewUserId') || null
+  );
 
   let headers = {
     token: localStorage.getItem('userToken'),
@@ -26,6 +29,14 @@ export default function CartContextProvider(props) {
       localStorage.removeItem('userId');
     }
   }, [userId]);
+
+  useEffect(() => {
+    if (newUserId) {
+      localStorage.setItem('NewUserId', newUserId);
+    } else {
+      localStorage.removeItem('NewUserId');
+    }
+  }, [newUserId]);
 
   async function addProductToCart(productId) {
     return await axios
@@ -80,14 +91,15 @@ export default function CartContextProvider(props) {
   }
 
   async function getOrders() {
-    if (!userId) {
+    if (!userId && !newUserId) {
       setLoading(false);
       return;
     }
+   
 
     try {
       const response = await axios.get(
-        `https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`
+        `https://ecommerce.routemisr.com/api/v1/orders/user/${userId || newUserId}`
       );
       setOrders(response.data);
       setLoading(false);
@@ -98,8 +110,6 @@ export default function CartContextProvider(props) {
       setLoading(false);
     }
   }
-
-
 
   async function deleteProduct(productId) {
     return axios
@@ -202,6 +212,8 @@ export default function CartContextProvider(props) {
         setNumberOfCartItems(response.data.numOfCartItems);
         setUserId(response?.data.data.user);
         console.log(response?.data.data.user, 'userId');
+        localStorage.setItem('userId', response?.data.data.user);
+        localStorage.setItem('NewUserId', response?.data.data.user);
 
         toast.success('Order placed successfully');
         window.location.href = url;
@@ -263,7 +275,7 @@ export default function CartContextProvider(props) {
         orders,
         loading,
         setLoading,
-        setOrders
+        setOrders,
       }}
     >
       {props.children}

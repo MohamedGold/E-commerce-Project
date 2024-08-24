@@ -33,6 +33,7 @@ export default function NavBar() {
     localStorage.removeItem('userToken');
     localStorage.removeItem('userName');
     localStorage.removeItem('userId');
+    localStorage.removeItem('NewUserId')
     setToken(null);
 
     setNumberOfCartItems(0);
