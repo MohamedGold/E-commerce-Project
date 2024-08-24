@@ -4,6 +4,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+
 
 export default function Register() {
   const [userMessage, setuserMessage] = useState(null);
@@ -101,181 +103,188 @@ export default function Register() {
   }
   return (
     <>
-      <div className="container  mx-auto  py-20  px-5 md:px-0 max-w-screen-md">
-        <h1 className="text-2xl text-center font-bold mb-4 ">Register Now:</h1>
-        {userError ? (
-          <div
-            className=" my-2 text-center font-bold p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-200  dark:text-red-400"
-            role="alert"
-          >
-            {userError}
-          </div>
-        ) : null}
-
-        {userMessage ? (
-          <div
-            className="p-4 mb-4 text-sm text-green-800 rounded-lg  bg-green-50 dark:bg-gray-800 dark:text-green-400"
-            role="alert"
-          >
-            {userMessage}
-          </div>
-        ) : null}
-        <form onSubmit={formik.handleSubmit}>
-          <div className="my-2 ">
-            <label
-              htmlFor="name"
-              className="block mb-2 text-sm font-medium text-gray-900  dark:text-black"
+      <HelmetProvider>
+        <Helmet>
+          <title>Register</title>
+        </Helmet>
+        <div className="container  mx-auto  py-20  px-5 md:px-0 max-w-screen-md">
+          <h1 className="text-2xl text-center font-bold mb-4 ">
+            Register Now:
+          </h1>
+          {userError ? (
+            <div
+              className=" my-2 text-center font-bold p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-200  dark:text-red-400"
+              role="alert"
             >
-              Name
-            </label>
-            <input
-              name="name"
-              type="text"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.name}
-              id="name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
-            />
-            {formik.touched.name && formik.errors.name ? (
-              <div
-                className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
-                role="alert"
-              >
-                {formik.errors.name}
-              </div>
-            ) : null}
-          </div>
-
-          <div className="my-2">
-            <label
-              htmlFor="email"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
-            >
-              email
-            </label>
-            <input
-              name="email"
-              type="email"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.email}
-              id="email"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
-            />
-            {formik.touched.email && formik.errors.email ? (
-              <div
-                className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
-                role="alert"
-              >
-                {formik.errors.email}
-              </div>
-            ) : null}
-          </div>
-
-          <div className="my-2">
-            <label
-              htmlFor="password"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
-            >
-              Password
-            </label>
-            <input
-              name="password"
-              type="password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
-              id="password"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
-            />
-            {formik.touched.password && formik.errors.password ? (
-              <div
-                className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:text-red-400"
-                role="alert"
-              >
-                {formik.errors.password}
-              </div>
-            ) : null}
-          </div>
-
-          <div className="my-2">
-            <label
-              htmlFor="rePassword"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
-            >
-              rePassword
-            </label>
-            <input
-              name="rePassword"
-              type="password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.rePassword}
-              id="rePassword"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
-            />
-            {formik.touched.rePassword && formik.errors.rePassword ? (
-              <div
-                className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
-                role="alert"
-              >
-                {formik.errors.rePassword}
-              </div>
-            ) : null}
-          </div>
-
-          <div className="my-2">
-            <label
-              htmlFor="phone"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
-            >
-              phone
-            </label>
-            <input
-              name="phone"
-              type="tel"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.phone}
-              id="phone"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
-            />
-            {formik.touched.phone && formik.errors.phone ? (
-              <div
-                className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
-                role="alert"
-              >
-                {formik.errors.phone}
-              </div>
-            ) : null}
-          </div>
-
-          <div className="text-center">
-            {isLoading ? (
-              <button
-                type="submit"
-                className="bg-main text-white px-4 py-3 rounded-lg"
-              >
-                <i className="fa fa-spinner fa-spin "></i>
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="bg-main  text-white border transition-all font-semibold px-4 my-3 py-3 rounded-lg"
-                disabled={!(formik.isValid && formik.dirty)}
-              >
-                Register
-              </button>
-            )}
-            <div>
-              <Link to="/login" className="text-sm  hover:text-blue-700">
-                Already have an account? Login
-              </Link>
+              {userError}
             </div>
-          </div>
-        </form>
-      </div>
+          ) : null}
+
+          {userMessage ? (
+            <div
+              className="p-4 mb-4 text-sm text-green-800 rounded-lg  bg-green-50 dark:bg-gray-800 dark:text-green-400"
+              role="alert"
+            >
+              {userMessage}
+            </div>
+          ) : null}
+          <form onSubmit={formik.handleSubmit}>
+            <div className="my-2 ">
+              <label
+                htmlFor="name"
+                className="block mb-2 text-sm font-medium text-gray-900  dark:text-black"
+              >
+                Name
+              </label>
+              <input
+                name="name"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.name}
+                id="name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
+              />
+              {formik.touched.name && formik.errors.name ? (
+                <div
+                  className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.name}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="my-2">
+              <label
+                htmlFor="email"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+              >
+                email
+              </label>
+              <input
+                name="email"
+                type="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                id="email"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <div
+                  className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.email}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="my-2">
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+              >
+                Password
+              </label>
+              <input
+                name="password"
+                type="password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+                id="password"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
+              />
+              {formik.touched.password && formik.errors.password ? (
+                <div
+                  className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.password}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="my-2">
+              <label
+                htmlFor="rePassword"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+              >
+                rePassword
+              </label>
+              <input
+                name="rePassword"
+                type="password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.rePassword}
+                id="rePassword"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
+              />
+              {formik.touched.rePassword && formik.errors.rePassword ? (
+                <div
+                  className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.rePassword}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="my-2">
+              <label
+                htmlFor="phone"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+              >
+                phone
+              </label>
+              <input
+                name="phone"
+                type="tel"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.phone}
+                id="phone"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
+              />
+              {formik.touched.phone && formik.errors.phone ? (
+                <div
+                  className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.phone}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="text-center">
+              {isLoading ? (
+                <button
+                  type="submit"
+                  className="bg-main text-white px-4 py-3 rounded-lg"
+                >
+                  <i className="fa fa-spinner fa-spin "></i>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="bg-main  text-white border transition-all font-semibold px-4 my-3 py-3 rounded-lg"
+                  disabled={!(formik.isValid && formik.dirty)}
+                >
+                  Register
+                </button>
+              )}
+              <div>
+                <Link to="/login" className="text-sm  hover:text-blue-700">
+                  Already have an account? Login
+                </Link>
+              </div>
+            </div>
+          </form>
+        </div>
+      </HelmetProvider>
     </>
   );
 }

@@ -6,6 +6,8 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { TokenContext } from '../../Context/TokenContext';
 import { CartContext } from '../../Context/CartContext';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+
 export default function Login() {
   let { token, setToken, setUserName, userName } = useContext(TokenContext);
 
@@ -71,109 +73,114 @@ export default function Login() {
   return (
     <>
       <>
-        <div className="container mx-auto px-5 md:px-0  py-20  max-w-screen-md">
-          <h1 className="text-2xl font-bold text-center mb-4 ">Login Now:</h1>
-          {userError ? (
-            <div
-              className=" my-2 text-center font-bold p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100  dark:text-red-600"
-              role="alert"
-            >
-              {userError}
-            </div>
-          ) : null}
-
-          {userMessage ? (
-            <div
-              className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-              role="alert"
-            >
-              {userMessage}
-            </div>
-          ) : null}
-          <form onSubmit={formik.handleSubmit}>
-            <div className="my-2">
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+        <HelmetProvider>
+          <Helmet>
+            <title>Login</title>
+          </Helmet>
+          <div className="container mx-auto px-5 md:px-0  py-20  max-w-screen-md">
+            <h1 className="text-2xl font-bold text-center mb-4 ">Login Now:</h1>
+            {userError ? (
+              <div
+                className=" my-2 text-center font-bold p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100  dark:text-red-600"
+                role="alert"
               >
-                email
-              </label>
-              <input
-                name="email"
-                type="email"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-                id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
-              />
-              {formik.touched.email && formik.errors.email ? (
-                <div
-                  className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
-                  role="alert"
-                >
-                  {formik.errors.email}
-                </div>
-              ) : null}
-            </div>
+                {userError}
+              </div>
+            ) : null}
 
-            <div className="my-2">
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+            {userMessage ? (
+              <div
+                className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                role="alert"
               >
-                Password
-              </label>
-              <input
-                name="password"
-                type="password"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-                id="password"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
-              />
-              {formik.touched.password && formik.errors.password ? (
-                <div
-                  className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
-                  role="alert"
+                {userMessage}
+              </div>
+            ) : null}
+            <form onSubmit={formik.handleSubmit}>
+              <div className="my-2">
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                 >
-                  {formik.errors.password}
-                </div>
-              ) : null}
-            </div>
+                  email
+                </label>
+                <input
+                  name="email"
+                  type="email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  id="email"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
+                />
+                {formik.touched.email && formik.errors.email ? (
+                  <div
+                    className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
+                    role="alert"
+                  >
+                    {formik.errors.email}
+                  </div>
+                ) : null}
+              </div>
 
-            <div className="text-center">
-              {isLoading ? (
-                <button
-                  type="submit"
-                  className="bg-main text-white px-4 py-3 rounded-lg"
+              <div className="my-2">
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                 >
-                  <i className="fa fa-spinner fa-spin "></i>
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className=" bg-main border font-semibold  text-white transition-all   my-3 px-4 py-3 rounded-lg"
-                  disabled={!(formik.isValid && formik.dirty)}
-                >
-                  Login Now
-                </button>
-              )}
+                  Password
+                </label>
+                <input
+                  name="password"
+                  type="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                  id="password"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-transparent"
+                />
+                {formik.touched.password && formik.errors.password ? (
+                  <div
+                    className="my-1 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  dark:text-red-400"
+                    role="alert"
+                  >
+                    {formik.errors.password}
+                  </div>
+                ) : null}
+              </div>
 
-              <Link to="/forget-password">
-                <div className="text-center text-sm w-fit mx-auto mt-2 hover:text-green-700">
-                  forget Password ?
+              <div className="text-center">
+                {isLoading ? (
+                  <button
+                    type="submit"
+                    className="bg-main text-white px-4 py-3 rounded-lg"
+                  >
+                    <i className="fa fa-spinner fa-spin "></i>
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className=" bg-main border font-semibold  text-white transition-all   my-3 px-4 py-3 rounded-lg"
+                    disabled={!(formik.isValid && formik.dirty)}
+                  >
+                    Login Now
+                  </button>
+                )}
+
+                <Link to="/forget-password">
+                  <div className="text-center text-sm w-fit mx-auto mt-2 hover:text-green-700">
+                    forget Password ?
+                  </div>
+                </Link>
+              </div>
+              <Link to="/register">
+                <div className="text-center text-sm hover:text-green-700 w-fit mx-auto mt-4">
+                  Don't have an account? Sign Up
                 </div>
               </Link>
-            </div>
-            <Link to="/register">
-              <div className="text-center text-sm hover:text-green-700 w-fit mx-auto mt-4">
-                Don't have an account? Sign Up
-              </div>
-            </Link>
-          </form>
-        </div>
+            </form>
+          </div>
+        </HelmetProvider>
       </>
     </>
   );
