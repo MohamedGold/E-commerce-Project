@@ -1,22 +1,26 @@
 import React from 'react';
 import styles from './Loader.module.css';
-import { DNA, MutatingDots } from 'react-loader-spinner';
-export default function Loader() {
+// import { DNA, MutatingDots } from 'react-loader-spinner';
+export default function Loader({ size = 'full' }) {
   return (
     <>
-      <div className="container h-screen mt-[-5rem] flex justify-center  items-center  mx-auto">
-        <div className="">
-          <MutatingDots
-            visible={true}
-            height="100"
-            width="100"
-            color="#4fa94d"
-            secondaryColor="#4fa94d"
-            radius="12.5"
-            ariaLabel="mutating-dots-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
+      <div
+        style={{
+          width: size === 'full' ? '100vw' : size,
+          height: size === 'full' ? '100vh' : size,
+        }}
+        className={styles.loaderContainer}
+      >
+        <span className={styles.loader}></span>
+        <div className={styles.dotSpinner}>
+          <div className={styles.dotSpinner__dot}></div>
+          <div className={styles.dotSpinner__dot}></div>
+          <div className={styles.dotSpinner__dot}></div>
+          <div className={styles.dotSpinner__dot}></div>
+          <div className={styles.dotSpinner__dot}></div>
+          <div className={styles.dotSpinner__dot}></div>
+          <div className={styles.dotSpinner__dot}></div>
+          <div className={styles.dotSpinner__dot}></div>
         </div>
       </div>
     </>

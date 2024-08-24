@@ -3,39 +3,51 @@ import styles from './AllOrders.module.css';
 import axios from 'axios';
 import { CartContext } from '../../Context/CartContext';
 import { Link } from 'react-router-dom';
+import Loader from '../Loader/Loader';
 
 export default function AllOrders() {
-  const { cartId, userId, checkOutCash, getOrders, orders, loading , setLoading ,setOrders} =
-    useContext(CartContext);
+  const {
+    cartId,
+    userId,
+    checkOutCash,
+    getOrders,
+    orders,
+    loading,
+    setLoading,
+    setOrders,
+  } = useContext(CartContext);
   // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   async function getUserOrder() {
-   
-      setLoading(true); 
+    setLoading(true);
     await getOrders();
   }
 
-  useEffect(() => {
-    if(localStorage.getItem('userId')){
-    getUserOrder();
-    }
-    else {
-      setLoading(false);
-      setOrders([])
+ useEffect(() => {
+   const storedUserId = localStorage.getItem('userId');
 
-    }
-  }, []);
+   if (
+     storedUserId &&
+     storedUserId !== 'undefined' &&
+     storedUserId !== 'null'
+   ) {
+     getUserOrder();
+   } else {
+     setOrders([]);
+     setLoading(false);
+   }
+ }, []);
 
-  if (loading) {
-    return (
-      <div className="container mx-auto max-w-screen-xl">
-        <p className="text-center text-3xl font-bold text-[var(--main-color)]">
-          Loading your orders...
-        </p>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="container mx-auto max-w-screen-xl">
+  //       <p className="text-center text-3xl font-bold text-[var(--main-color)]">
+  //         Loading your orders...
+  //       </p>
+  //     </div>
+  //   );
+  // }
 
   if (error) {
     return (
@@ -63,6 +75,7 @@ export default function AllOrders() {
 
   return (
     <div className="container mx-auto max-w-screen-xl">
+      {loading && <Loader />}
       <p className="text-center text-3xl my-5 pt-5 font-bold text-[var(--main-color)]">
         Your Orders
       </p>
